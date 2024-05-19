@@ -12,4 +12,6 @@
 
 body {
   font-family: 'Albert Sans', sans-serif;
+  letter-spacing: 0.5px;
+  overflow-x: hidden;
 }

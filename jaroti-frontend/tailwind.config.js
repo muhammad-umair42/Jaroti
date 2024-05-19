@@ -3,13 +3,18 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     fontSize: {
-      xs: ['10px', '13px'],
+      xxs: ['10px', '11px'],
+      xs: ['12px', '13px'],
       sm: ['14px', '20px'],
       base: ['16px', '24px'],
       lg: ['20px', '28px'],
       xl: ['24px', '32px'],
     },
-    extend: {},
+    extend: {
+      boxShadow: {
+        '3xl': 'rgba(0, 0, 0, 0.35) 0px 5px 15px;',
+      },
+    },
   },
   plugins: [],
 };
