@@ -79,7 +79,7 @@ const Navbar = () => {
                   <div className="      child-div overflow-hidden  shadow-3xl bg-white py-5 px-8 rounded-md flex justify-center items-start flex-col gap-4 text-2xl  ">
                     <div>
                       <span className="font-bold mr-2">Chat:</span>
-                      <span>Let's Chat</span>
+                      <span>Let&apos;s Chat</span>
                     </div>
                     <div>
                       <span className="font-bold mr-2">Phone:</span>
@@ -124,7 +124,7 @@ const Navbar = () => {
                   className="w-10 md:w-7 object-cover"
                   alt=""
                 />
-                <div className=" child-div group-hover:bg-red-600 absolute bottom-5 bg-black transition duration-300 ease-in-out text-white h-7 w-7 md:h-5 md:w-5 flex items-center justify-center left-5 text-sm md:text-xxs    rounded-full">
+                <div className=" child-div group-hover:bg-red-600 absolute bottom-5 bg-black transition duration-300 ease-in-out text-white h-7 w-7 md:h-5 md:w-5 flex items-center justify-center left-5 md:left-4 md:bottom-4 text-sm md:text-xxs    rounded-full">
                   4
                 </div>
               </div>
@@ -139,7 +139,9 @@ const Navbar = () => {
         </div>
         {(isTop || LinksOpen) && (
           <div className="w-full bg-white hidden md:flex justify-center items-center gap-10 py-5 text-base">
-            <span>Home</span>
+            <span className="cursor-pointer hover:text-red-700 transition duration-300 ease">
+              Home
+            </span>
             <span>
               <Jewlery />
             </span>
@@ -149,10 +151,18 @@ const Navbar = () => {
             <span>
               <Accessories />
             </span>
-            <span>Sale</span>
-            <span>About us</span>
-            <span>Contact us</span>
-            <span>Blog</span>
+            <span className="cursor-pointer hover:text-red-700 transition duration-300 ease">
+              Sale
+            </span>
+            <span className="cursor-pointer hover:text-red-700 transition duration-300 ease">
+              About us
+            </span>
+            <span className="cursor-pointer hover:text-red-700 transition duration-300 ease">
+              Contact us
+            </span>
+            <span className="cursor-pointer hover:text-red-700 transition duration-300 ease">
+              Blog
+            </span>
           </div>
         )}
       </nav>
