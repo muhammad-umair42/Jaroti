@@ -1,11 +1,14 @@
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import CartImg from '../../assets/cart.png';
+import CloseImg from '../../assets/close.png';
 import DropdownIcon from '../../assets/dropdownIcon.png';
 import HamThin from '../../assets/hamthin.png';
 import HeartImg from '../../assets/heart.png';
 import LocationImg from '../../assets/location.png';
 import logo from '../../assets/logo.png';
+import Profile from '../../assets/profile.jpg';
 import ProfileImg from '../../assets/profile.png';
 import SearchBar from '../SearchBar';
 import Accessories from '../navDropDowns/Accessories';
@@ -14,6 +17,9 @@ import Jewlery from '../navDropDowns/Jewlery';
 const Navbar = () => {
   const [isTop, setIsTop] = useState(true);
   const [LinksOpen, setLinksOpen] = useState(false);
+  const [HamOpen, setHamOpen] = useState(false);
+  const user = false;
+  const username = 'Umair';
   useEffect(() => {
     const handleScroll = debounce(() => {
       const scrollThreshold = 50; // Adjust this value as needed
@@ -103,12 +109,18 @@ const Navbar = () => {
                   style={{ right: '-5rem' }}
                 >
                   <div className=" child-div overflow-hidden  shadow-3xl bg-white py-5 px-8 rounded-md flex justify-center items-start  gap-4 text-2xl  ">
-                    <div className="bg-black font-bold px-7 py-2 text-white rounded-2xl hover:bg-red-700 transition duration-300 ease">
+                    <Link
+                      to="/login"
+                      className="bg-black font-bold px-7 py-2 text-white rounded-2xl hover:bg-red-700 transition duration-300 ease"
+                    >
                       Login
-                    </div>
-                    <div className="bg-black font-bold px-7 py-2 text-white rounded-2xl hover:bg-red-700 transition duration-300 ease">
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="bg-black font-bold px-7 py-2 text-white rounded-2xl hover:bg-red-700 transition duration-300 ease"
+                    >
                       Register
-                    </div>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -132,11 +144,15 @@ const Navbar = () => {
                 src={HamThin}
                 className="flex md:hidden w-14 cursor-pointer object-contain"
                 alt=""
-                onClick={() => setLinksOpen(!LinksOpen)}
+                onClick={() => {
+                  console.log(HamOpen);
+                  setHamOpen(true);
+                }}
               />
             </div>
           </div>
         </div>
+        {/* Links */}
         {(isTop || LinksOpen) && (
           <div className="w-full bg-white hidden md:flex justify-center items-center gap-10 py-5 text-base">
             <span className="cursor-pointer hover:text-red-700 transition duration-300 ease">
@@ -166,6 +182,86 @@ const Navbar = () => {
           </div>
         )}
       </nav>
+      {/* Hamburger */}
+      {HamOpen && (
+        <div className="bg-white w-full fixed top-0 left-0 h-full flex flex-col justify-start items-center">
+          {/* Top */}
+          <div className="flex justify-between items-center p-5 w-full border-b border-slate-400 ">
+            <img src={logo} className="object-contain w-32" alt="" />
+            <div
+              className="h-8 w-8 rounded-full flex justify-center items-center border-black border cursor-pointer"
+              onClick={() => setHamOpen(false)}
+            >
+              <img src={CloseImg} className="h-5 w-5 object-contain" alt="" />
+            </div>
+          </div>
+          {/* Center */}
+          <div className="flex flex-col gap-2 w-full h-full py-5">
+            {/* Profile */}
+            <div className=" border-b border-slate-300  py-3">
+              {user ? (
+                <div className="flex flex-col justify-center items-center gap-3">
+                  <img
+                    src={Profile}
+                    className="h-24 w-24 object-cover rounded-full"
+                    alt=""
+                  />
+                  <span className="font-bold">Hi, {username}</span>
+                  <span className="px-5 py-2 rounded-3xl border border-slate-400 cursor-pointer">
+                    DashBoard
+                  </span>
+                  <span className="mt-3 px-5 py-2 rounded-3xl bg-red-700 font-bold text-white cursor-pointer">
+                    Logout
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <img
+                    src={ProfileImg}
+                    className=" w-12 object-contain"
+                    alt=""
+                  />
+                  <Link
+                    to="/register"
+                    className="px-5 py-1 rounded-3xl bg-red-700 font-bold text-white"
+                  >
+                    Register
+                  </Link>
+                  <Link
+                    to="login"
+                    className="px-5 py-1 rounded-3xl bg-red-700 font-bold text-white"
+                  >
+                    Login
+                  </Link>
+                </div>
+              )}
+            </div>
+            <div className="flex gap-2 items-center justify-center flex-wrap">
+              <span className="px-4 py-1 rounded-3xl border border-slate-500 cursor-pointer">
+                Jewlery
+              </span>
+              <span className="px-4 py-1 rounded-3xl border border-slate-500 cursor-pointer">
+                Handbags
+              </span>
+              <span className="px-4 py-1 rounded-3xl border border-slate-500 cursor-pointer">
+                Accessories
+              </span>
+              <span className="px-4 py-1 rounded-3xl border border-slate-500 cursor-pointer">
+                Sale
+              </span>
+              <span className="px-4 py-1 rounded-3xl border border-slate-500 cursor-pointer">
+                About us
+              </span>
+              <span className="px-4 py-1 rounded-3xl border border-slate-500 cursor-pointer">
+                Contact us
+              </span>
+              <span className="px-4 py-1 rounded-3xl border border-slate-500 cursor-pointer">
+                Blog
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
