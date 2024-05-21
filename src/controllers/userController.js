@@ -7,7 +7,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, fullName, recoveryKey } = req.body;
 
   if (!username || !email || !password || !fullName || !recoveryKey) {
-    res
+    return res
       .status(400)
       .json(new ApiResponse(400, null, 'Please provide all required fields'));
   }
@@ -15,7 +15,9 @@ export const registerUser = asyncHandler(async (req, res) => {
   const existedUser = await User.findOne({ $or: [{ username }, { email }] });
 
   if (existedUser) {
-    res.status(400).json(new ApiResponse(400, null, 'User already exists'));
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, 'User already exists'));
   }
 
   const user = new User({
@@ -29,7 +31,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   await user.save();
 
   if (!user) {
-    res
+    return res
       .status(500)
       .json(new ApiResponse(500, null, 'Oops! Please try again later'));
   }
@@ -89,6 +91,35 @@ export const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, 'User logged out'));
 });
 
+export const recoverPassword = asyncHandler(async (req, res) => {
+  const { username, recoveryKey, password } = req.body;
+
+  if (!username || !recoveryKey) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, 'All fields are required.'));
+  }
+
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    return res.status(404).json(new ApiResponse(404, null, 'User not found'));
+  }
+
+  if (user.recoveryKey !== recoveryKey) {
+    return res
+      .status(401)
+      .json(new ApiResponse(401, null, 'Invalid recovery key'));
+  }
+
+  user.password = password;
+
+  await user.save();
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, {}, 'Password updated successfully'));
+});
 export const updateUser = asyncHandler(async (req, res) => {
   const { user, user_id } = req.body;
 

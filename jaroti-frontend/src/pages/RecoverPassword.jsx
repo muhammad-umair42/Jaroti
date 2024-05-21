@@ -1,13 +1,62 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import makeRequest from '../Api/axios';
 import Logo from '../assets/logo.png';
 const Login = () => {
   const [formData, setFormData] = useState({
     username: '',
-    passwordrecoverykey: '',
-    newPassword: '',
+    recoveryKey: '',
+    password: '',
     confirmNewPassword: '',
   });
+  const [formErrors, setFormErrors] = useState();
+  const navigate = useNavigate();
+
+  const validateFormData = () => {
+    const errors = {};
+    for (const key in formData) {
+      formData[key] = formData[key].trim();
+      if (formData[key] === null || formData[key] == '') {
+        errors[key] = 'error';
+      }
+    }
+    if (formData.password !== formData.confirmNewPassword) {
+      errors['confirmNewPassword'] = 'error';
+      errors['password'] = 'error';
+      toast.error('Passwords do not Match');
+    }
+    setFormErrors(errors);
+
+    if (Object.entries(errors).length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handleRecoverPasswordSubmit = async e => {
+    e.preventDefault();
+
+    const isOk = validateFormData();
+
+    if (isOk) {
+      const reqPramas = {
+        method: 'post',
+        url: '/users/recoverpassword',
+        reqData: formData,
+        reqType: 'recoverpassword',
+      };
+
+      const { success, resData } = await makeRequest(reqPramas);
+      console.log('here after');
+      if (success) {
+        console.log('here in if');
+        navigate('/login');
+      }
+    }
+  };
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -27,7 +76,9 @@ const Login = () => {
               <span className="text-xs">Username:</span>
               <input
                 type="text"
-                className="w-full  rounded-2xl border border-slate-400 outline-0 py-2 px-3"
+                className={`w-full  rounded-2xl border ${
+                  formErrors?.username ? 'border-red-700 ' : 'border-slate-400 '
+                } outline-0 py-2 px-3`}
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
@@ -36,10 +87,14 @@ const Login = () => {
             <div className="flex flex-col w-full  justify-center items-start gap-2">
               <span className="text-xs">Password Recovery Key:</span>
               <input
-                type="password"
-                className="w-full  rounded-2xl border border-slate-400 outline-0 py-2 px-3"
-                name="passwordrecoverykey"
-                value={formData.passwordrecoverykey}
+                type="text"
+                className={`w-full  rounded-2xl border ${
+                  formErrors?.recoveryKey
+                    ? 'border-red-700 '
+                    : 'border-slate-400 '
+                } outline-0 py-2 px-3`}
+                name="recoveryKey"
+                value={formData.recoveryKey}
                 onChange={handleInputChange}
               />
             </div>
@@ -49,9 +104,11 @@ const Login = () => {
               <span className="text-xs">New Password:</span>
               <input
                 type="password"
-                className="w-full  rounded-2xl border border-slate-400 outline-0 py-2 px-3"
-                name="newPassword"
-                value={formData.newPassword}
+                className={`w-full  rounded-2xl border ${
+                  formErrors?.password ? 'border-red-700 ' : 'border-slate-400 '
+                } outline-0 py-2 px-3`}
+                name="password"
+                value={formData.password}
                 onChange={handleInputChange}
               />
             </div>
@@ -59,7 +116,11 @@ const Login = () => {
               <span className="text-xs">Confirm New Password:</span>
               <input
                 type="password"
-                className="w-full  rounded-2xl border border-slate-400 outline-0 py-2 px-3"
+                className={`w-full  rounded-2xl border ${
+                  formErrors?.confirmNewPassword
+                    ? 'border-red-700 '
+                    : 'border-slate-400 '
+                } outline-0 py-2 px-3`}
                 name="confirmNewPassword"
                 value={formData.confirmNewPassword}
                 onChange={handleInputChange}
@@ -68,8 +129,11 @@ const Login = () => {
           </div>
         </div>
         <div className="w-full flex flex-col gap-4 justify-center items-center">
-          <button className="w-full border border-slate-400 hover:bg-red-700 hover:text-white py-2 rounded-2xl font-extrabold uppercase transition duration-300 ease">
-            Login
+          <button
+            className="w-full border border-slate-400 hover:bg-red-700 hover:text-white py-2 rounded-2xl font-extrabold uppercase transition duration-300 ease"
+            onClick={handleRecoverPasswordSubmit}
+          >
+            Recover
           </button>
           <div className="flex flex-col justify-start items-start gap-3">
             <span className="text-xs">
