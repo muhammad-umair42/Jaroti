@@ -1,25 +1,22 @@
+import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import RecoverPassword from './pages/RecoverPassword';
 import Register from './pages/Register';
 function App() {
-  const isLoggedIn = false;
-
+  const user = useSelector(state => state.user.user);
   return (
     <Routes>
       <Route exact path="/" element={<HomePage />} />
       <Route
         path="/register"
-        element={isLoggedIn ? <Navigate to="/" /> : <Register />}
+        element={user ? <Navigate to="/" /> : <Register />}
       />
-      <Route
-        path="/login"
-        element={isLoggedIn ? <Navigate to="/" /> : <Login />}
-      />
+      <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
       <Route
         path="/recoverpassword"
-        element={isLoggedIn ? <Navigate to="/" /> : <RecoverPassword />}
+        element={user ? <Navigate to="/" /> : <RecoverPassword />}
       />
     </Routes>
   );

@@ -23,7 +23,9 @@ export const isUserAuthenticated = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.message === 'jwt expired') {
-      res.status(400).json(new ApiResponse(400, {}, 'Token Expired'));
+      res
+        .status(400)
+        .json(new ApiResponse(400, {}, 'Your Session Has Been Expired'));
     }
     res
       .status(500)

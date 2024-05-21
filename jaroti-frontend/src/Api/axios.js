@@ -51,9 +51,7 @@ export const makeRequest = async ({
     return { success, resData };
   } catch (error) {
     //SHOWING ERROR
-    console.log('here');
     toast.error(error?.response?.data?.message);
-    console.log(error);
     return { success, resData };
   }
 };

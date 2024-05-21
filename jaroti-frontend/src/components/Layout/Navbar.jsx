@@ -1,6 +1,8 @@
 import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import makeRequest from '../../Api/axios';
 import CartImg from '../../assets/cart.png';
 import CloseImg from '../../assets/close.png';
 import DropdownIcon from '../../assets/dropdownIcon.png';
@@ -18,7 +20,9 @@ const Navbar = () => {
   const [isTop, setIsTop] = useState(true);
   const [LinksOpen, setLinksOpen] = useState(false);
   const [HamOpen, setHamOpen] = useState(false);
-  const user = false;
+  const user = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
+
   const username = 'Umair';
   useEffect(() => {
     const handleScroll = debounce(() => {
@@ -33,6 +37,19 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  const handleLogout = async e => {
+    e.preventDefault();
+    const makeParams = {
+      method: 'get',
+      url: '/users/logout',
+      reqType: 'logout',
+      dispatch: dispatch,
+    };
+    const { success } = await makeRequest(makeParams);
+    if (success) {
+      window.location.reload();
+    }
+  };
 
   return (
     <>
@@ -98,29 +115,61 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-              <div className=" group relative hidden md:flex md:justify-center md:items-center md:gap-1 cursor-pointer  p-2 hover:bg-red-400 transition duration-300 ease-in-out rounded-full">
-                <img
-                  src={ProfileImg}
-                  alt="Search"
-                  className="w-4 h-4 object-contain"
-                />
+              <div
+                className={`group relative hidden md:flex md:justify-center md:items-center md:gap-1 cursor-pointer  ${
+                  user?.profileImg ? 'w-7 h-7' : 'p-2'
+                }  hover:bg-red-400 transition duration-300 ease-in-out rounded-full`}
+              >
+                {user?.profileImg ? (
+                  <img
+                    src={user.profileImg}
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  <img
+                    src={ProfileImg}
+                    alt="Search"
+                    className="w-4 h-4 object-cover"
+                  />
+                )}
                 <div
-                  className="hidden w-max h-max absolute group-hover:flex top-5  pt-6"
+                  className={`hidden w-max h-max absolute group-hover:flex  pt-6 ${
+                    user ? 'top-5 left-[-5rem]' : 'top-5 '
+                  }`}
                   style={{ right: '-5rem' }}
                 >
-                  <div className=" child-div overflow-hidden  shadow-3xl bg-white py-5 px-8 rounded-md flex justify-center items-start  gap-4 text-2xl  ">
-                    <Link
-                      to="/login"
-                      className="bg-black font-bold px-7 py-2 text-white rounded-2xl hover:bg-red-700 transition duration-300 ease"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="bg-black font-bold px-7 py-2 text-white rounded-2xl hover:bg-red-700 transition duration-300 ease"
-                    >
-                      Register
-                    </Link>
+                  <div className=" child-div overflow-hidden  shadow-3xl bg-white py-5 px-8 rounded-md flex  justify-center items-start  gap-4 text-2xl  ">
+                    {user?.profileImg ? (
+                      <div className="flex flex-col justify-start items-start gap-4">
+                        <span className="font-bold text-xs">
+                          Hi, {username}
+                        </span>
+                        <Link to="/dashboard" className="hover:font-bold">
+                          Dashboard
+                        </Link>
+                        <span
+                          className="hover:font-bold hover:text-red-700"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <Link
+                          to="/login"
+                          className="bg-black font-bold px-7 py-2 text-white rounded-2xl hover:bg-red-700 transition duration-300 ease"
+                        >
+                          Login
+                        </Link>
+                        <Link
+                          to="/register"
+                          className="bg-black font-bold px-7 py-2 text-white rounded-2xl hover:bg-red-700 transition duration-300 ease"
+                        >
+                          Register
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -145,7 +194,6 @@ const Navbar = () => {
                 className="flex md:hidden w-14 cursor-pointer object-contain"
                 alt=""
                 onClick={() => {
-                  console.log(HamOpen);
                   setHamOpen(true);
                 }}
               />
