@@ -15,7 +15,9 @@ export const dataController = (reqType, data, dispatch) => {
     case 'logout':
       dispatch(reset());
       break;
-
+    case 'updateProfilePicture':
+      dispatch(setUser({ user: data?.data?.user }));
+      break;
     default:
       break;
   }

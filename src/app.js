@@ -1,7 +1,6 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
-import multer from 'multer';
 import userRouter from './routes/userRoutes.js';
 
 export const app = express();

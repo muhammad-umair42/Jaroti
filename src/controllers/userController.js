@@ -1,6 +1,10 @@
 import { User } from '../models/userModel.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { generateToken } from '../utils/Tokens.js';
+import {
+  deleteFromCloudinary,
+  uploadOnCloudinary,
+} from '../utils/cloudinary.js';
 import { asyncHandler } from './../utils/AsyncHandler.js';
 
 export const registerUser = asyncHandler(async (req, res) => {
@@ -191,4 +195,45 @@ export const deleteUser = asyncHandler(async (req, res) => {
     .status(200)
     .clearCookie('accessToken')
     .json(new ApiResponse(200, {}, 'User Deleted Successfully'));
+});
+
+export const updateUserProfilePicture = asyncHandler(async (req, res) => {
+  const profilePicture = req.file?.path;
+  const user_id = req.params?.userid;
+
+  if (!user_id || !profilePicture) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, 'No Image Selected'));
+  }
+
+  const user = await User.findById(user_id).select('-password');
+
+  if (!user) {
+    return res.status(404).json(new ApiResponse(404, null, 'User Not Found'));
+  }
+  const cloudImage = await uploadOnCloudinary(profilePicture);
+
+  if (!cloudImage) {
+    return res
+      .status(500)
+      .json(new ApiResponse(500, null, 'Image Upload Failed'));
+  }
+
+  if (user.profileImg && user.profileImg !== '') {
+    const deletedImage = await deleteFromCloudinary(user.profileImg);
+  }
+
+  user.profileImg = cloudImage;
+  await user.save();
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { user: user },
+        'Profile Picture Updated Successfully',
+      ),
+    );
 });

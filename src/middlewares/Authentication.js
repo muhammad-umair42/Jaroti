@@ -14,10 +14,10 @@ export const isUserAuthenticated = async (req, res, next) => {
     if (!decoded) {
       return res.status(401).json(new ApiResponse(401, null, 'Unvalid Token'));
     }
-    if (decoded.id !== req.body.user_id) {
+    if (decoded.id !== req.params.userid) {
       return res
         .status(401)
-        .json(new ApiResponse(401, null, 'Un Authorized Request'));
+        .json(new ApiResponse(401, {}, 'Un Authorized Request'));
     }
 
     next();

@@ -23,7 +23,7 @@ const fileInstance = axios.create({
 export const makeRequest = async ({
   method,
   url,
-  reqData = {},
+  reqData = null,
   reqType = '',
   dispatch = null,
 }) => {
@@ -32,7 +32,7 @@ export const makeRequest = async ({
 
   try {
     let data = null;
-    if (reqType === 'updateprofilepicture') {
+    if (reqType === 'updateProfilePicture') {
       const { data: fileData } = await fileInstance[method](
         `/api/v1${url}`,
         reqData,
@@ -52,6 +52,7 @@ export const makeRequest = async ({
   } catch (error) {
     //SHOWING ERROR
     toast.error(error?.response?.data?.message);
+    console.log(error);
     return { success, resData };
   }
 };
