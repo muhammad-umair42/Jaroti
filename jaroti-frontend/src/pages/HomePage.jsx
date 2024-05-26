@@ -8,13 +8,35 @@ import HeroImg2 from '../assets/heroimg2.jpg';
 import ForWomenImg from '../assets/home1-bg-2.jpg';
 import ImgShop1 from '../assets/imgshop1.jpg';
 import ImgShop2 from '../assets/imgshop2.jpg';
+import InstaImg2 from '../assets/insta-carousel-1.jpeg';
+import InstaImg3 from '../assets/insta-carousel-2.jpeg';
+import InstaImg4 from '../assets/insta-carousel-3.jpeg';
+import InstaImg5 from '../assets/insta-carousel-5.jpeg';
+import InstaImg6 from '../assets/insta-carousel-6.jpeg';
+import InstaImg7 from '../assets/insta-carousel-8.jpeg';
+import InstaImg8 from '../assets/insta-carousel-9.jpeg';
+import InstaImg1 from '../assets/insta-carousel1.jpeg';
 import ArrowRight from '../assets/rightarrow.png';
 import smallImage from '../assets/sm-image-1.jpg';
 import smallImage2 from '../assets/sm-image-3.jpg';
 import truckImage from '../assets/truckpng.png';
 import Layout from '../components/Layout/Layout';
 import Product from '../components/Product';
+
 const HomePage = () => {
+  const instaimages = [
+    InstaImg1,
+    InstaImg2,
+    InstaImg3,
+    InstaImg4,
+    InstaImg5,
+    InstaImg6,
+    InstaImg7,
+    InstaImg8,
+    ForWomenImg,
+    HeroImg1,
+    HeroImg2,
+  ];
   const products = [
     {
       name: 'Gold Plated Earring',
@@ -85,12 +107,16 @@ const HomePage = () => {
     'Shop all',
   ];
   const [startIndex, setStartIndex] = useState(0);
+  const [startInstaIndex, setStartInstaIndex] = useState(0);
   const containerRef = useRef(null);
-
+  const instaContainerRef = useRef(null);
   useEffect(() => {
     const interval = setInterval(() => {
       setStartIndex(prevIndex =>
         prevIndex >= products.length - 4 ? 0 : prevIndex + 1,
+      );
+      setStartInstaIndex(prevIndex =>
+        prevIndex >= instaimages.length - 9 ? 0 : prevIndex + 1,
       );
     }, 5000); // Change images every 3 seconds
 
@@ -117,15 +143,15 @@ const HomePage = () => {
               </button>
             </div>
           </div>
-          <div className="flex gap-2 w-full  justify-center items-center">
+          <div className="flex gap-2 w-full  justify-center items-center p-5">
             <img
               src={HeroImg1}
-              className="w-full h-[60vw] md:w-96 md:h-[35vw] object-cover "
+              className="w-[50%] h-[40vw] md:w-96 md:h-[35vw] object-cover "
               alt=""
             />
             <img
               src={HeroImg2}
-              className="w-full h-[60vw] md:w-96 md:h-[35vw] object-cover "
+              className="w-[50%] h-[40vw] md:w-96 md:h-[35vw] object-cover "
               alt=""
             />
           </div>
@@ -245,10 +271,10 @@ const HomePage = () => {
         </section>
 
         {/* Featured Products */}
-        <section className=" py-14 px-4 flex flex-col w-full justify-center items-center ">
+        <section className=" py-14 px-4 flex flex-col w-full justify-center items-center gap-10">
           <div className="text-xl uppercase font-bold">Featured Products</div>
           <div>
-            <div className="grid grid-cols-5  gap-y-20 gap-x-5 justify-center items-center w-full flex-wrap">
+            <div className="grid grid-cols-2 md:grid-cols-5  gap-y-20 gap-x-5 justify-center items-center w-full flex-wrap">
               {products.map((product, index) => (
                 <Product key={index} product={product} width={'w-full'} />
               ))}
@@ -297,7 +323,7 @@ const HomePage = () => {
         {/* Shop by category */}
         <section className="w-full py-10 px-5 flex flex-col justify-center items-center gap-10 mb-10">
           <div className="uppercase text-xl font-bold">Shop by category</div>
-          <div className="w-full grid md:grid-cols-4 justify-between gap-y-3">
+          <div className="w-full grid-cols-2 grid md:grid-cols-4 justify-between gap-y-3">
             {dummyCategories.map((category, index) => (
               <div
                 key={index}
@@ -306,6 +332,35 @@ const HomePage = () => {
                 {category}
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="flex flex-col justify-center items-center w-full px-10">
+          <div className="group/insta w-full h-full flex items-center justify-center overflow-hidden relative py-8">
+            <div className="group-hover/insta:opacity-0 transition duration-300 ease absolute z-10   text-center">
+              <span className="bg-white px-14 uppercase border border-slate-200 py-4 text-xl font-bold rounded-full">
+                Insta Shop
+              </span>
+            </div>
+            <div
+              className=" flex gap-5 transition-transform duration-500 ease-out relative"
+              style={{ transform: `translateX(-${startInstaIndex * 18}%)` }}
+              ref={instaContainerRef}
+            >
+              {instaimages.map((img, index) => (
+                <div
+                  className="flex justify-center items-center relative"
+                  key={index}
+                >
+                  <div className="w-full h-full cursor-pointer rounded-lg transition duration-300 ease hover:bg-slate-900/40    absolute"></div>
+                  <img
+                    src={img}
+                    className=" cursor-pointer min-w-[15vw] h-[14vw] object-cover rounded-lg"
+                    alt=""
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       </div>

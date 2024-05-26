@@ -55,9 +55,9 @@ const Navbar = () => {
     <>
       <nav className="backdrop-blur-sm shadow-lg sticky top-0 left-0 z-50">
         <div
-          className={`z-10 ${
-            isTop ? 'py-3' : 'py-3'
-          } px-3   w-full flex items-center justify-between bg-white`}
+          className={`z-10 
+            py-3  
+           px-5   w-full flex items-center justify-between bg-white`}
         >
           <div className="flex justify-center items-center md:gap-3 gap-8">
             {!isTop && (
@@ -183,13 +183,17 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="hidden md:flex justify-center items-center cursor-pointer relative group parent-div ">
-                <img src={HeartImg} className=" w-5 object-cover" alt="" />
+                <img
+                  src={HeartImg}
+                  className=" w-5 md:w-6 object-cover"
+                  alt=""
+                />
                 <div className=" child-div group-hover:bg-red-600 absolute bottom-3 bg-black transition duration-300 ease-in-out text-white h-5 w-5 flex items-center justify-center left-3 text-xxs    rounded-full">
                   4
                 </div>
               </div>
               <div className="flex justify-center items-center cursor-pointer relative group parent-div ">
-                <img src={CartImg} className="w-8 md:w-7 object-cover" alt="" />
+                <img src={CartImg} className="w-8 md:w-8 object-cover" alt="" />
                 <div className=" child-div group-hover:bg-red-600 absolute bottom-4 bg-black transition duration-300 ease-in-out text-white h-5 w-5 md:h-5 md:w-5 flex items-center justify-center left-5 md:left-4 md:bottom-4 text-sm md:text-xxs    rounded-full">
                   4
                 </div>
@@ -237,7 +241,7 @@ const Navbar = () => {
       </nav>
       {/* Hamburger */}
       {HamOpen && (
-        <div className="bg-white w-full fixed top-0 left-0 h-full flex flex-col justify-start items-center">
+        <div className="bg-white w-full fixed top-0 left-0 h-full flex flex-col justify-start items-center z-[100]">
           {/* Top */}
           <div className="flex justify-between items-center p-5 w-full border-b border-slate-400 ">
             <img src={logo} className="object-contain w-32" alt="" />
@@ -255,14 +259,19 @@ const Navbar = () => {
               {user ? (
                 <div className="flex flex-col justify-center items-center gap-3">
                   <img
-                    src={Profile}
+                    src={
+                      user?.profileImg ? `${user?.profileImg}` : `${ProfileImg}`
+                    }
                     className="h-24 w-24 object-cover rounded-full"
                     alt=""
                   />
-                  <span className="font-bold">Hi, {username}</span>
-                  <span className="px-5 py-2 rounded-3xl border border-slate-400 cursor-pointer">
+                  <span className="font-bold">Hi, {user?.username}</span>
+                  <Link
+                    to="/dashboard"
+                    className="px-5 py-2 rounded-3xl border border-slate-400 cursor-pointer"
+                  >
                     DashBoard
-                  </span>
+                  </Link>
                   <span className="mt-3 px-5 py-2 rounded-3xl bg-red-700 font-bold text-white cursor-pointer">
                     Logout
                   </span>
