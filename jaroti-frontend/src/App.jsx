@@ -1,13 +1,15 @@
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import AdminDash from './pages/AdminDashBoard/AdminDash';
+import AdminProfile from './pages/AdminDashBoard/AdminProfile';
+import AdminUser from './pages/AdminDashBoard/AdminUser';
+import Users from './pages/AdminDashBoard/Users';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import RecoverPassword from './pages/RecoverPassword';
 import Register from './pages/Register';
 import UserDash from './pages/userDashBoard/UserDash';
 function App() {
-  const user = useSelector(state => state.user.user);
+  const user = useSelector(state => state?.user?.user);
   return (
     <Routes>
       <Route exact path="/" element={<HomePage />} />
@@ -25,7 +27,27 @@ function App() {
         element={
           user ? (
             user.isAdmin ? (
-              <AdminDash />
+              <AdminProfile user={user} />
+            ) : (
+              <UserDash />
+            )
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
+      <Route
+        path="/dashboard/users"
+        element={
+          user ? user.isAdmin ? <Users /> : <UserDash /> : <Navigate to="/" />
+        }
+      />
+      <Route
+        path="/dashboard/users/user/:id"
+        element={
+          user ? (
+            user.isAdmin ? (
+              <AdminUser />
             ) : (
               <UserDash />
             )

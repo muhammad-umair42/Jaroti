@@ -41,7 +41,7 @@ const Navbar = () => {
     e.preventDefault();
     const makeParams = {
       method: 'get',
-      url: '/users/logout',
+      url: `/users/logout/${user?._id}`,
       reqType: 'logout',
       dispatch: dispatch,
     };
@@ -53,10 +53,10 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="backdrop-blur-sm shadow-lg sticky top-0 left-0">
+      <nav className="backdrop-blur-sm shadow-lg sticky top-0 left-0 z-50">
         <div
           className={`z-10 ${
-            isTop ? 'py-6' : 'py-3'
+            isTop ? 'py-3' : 'py-3'
           } px-3   w-full flex items-center justify-between bg-white`}
         >
           <div className="flex justify-center items-center md:gap-3 gap-8">
@@ -78,15 +78,22 @@ const Navbar = () => {
               <span className="text-sm">FIND A STORE</span>
             </div>
             <div className="flex md:hidden justify-center items-center cursor-pointer relative group parent-div ">
-              <img src={HeartImg} className=" w-8 object-cover" alt="" />
-              <div className=" child-div group-hover:bg-red-600 absolute bottom-4 bg-black transition duration-300 ease-in-out text-white h-7 w-7 flex items-center justify-center left-4 text-sm    rounded-full">
+              <img src={HeartImg} className=" w-7 object-cover" alt="" />
+              <div className=" child-div group-hover:bg-red-600 absolute bottom-4 bg-black transition duration-300 ease-in-out text-white h-5 w-5 flex items-center justify-center left-4 text-sm    rounded-full">
                 4
               </div>
             </div>
           </div>
-          <div className="flex-1 flex items-center cursor-pointer justify-center">
-            <img src={logo} alt="" className="w-28   object-contain " />
-          </div>
+          <Link
+            to="/"
+            className="flex-1 flex items-center cursor-pointer justify-center"
+          >
+            <img
+              src={logo}
+              alt=""
+              className=" w-20  md:w-28   object-contain "
+            />
+          </Link>
           <div>
             <div className="flex justify-center items-center gap-4">
               <div className=" group relative parent-div hidden md:flex md:justify-center md:items-center md:gap-1 cursor-pointer ">
@@ -120,10 +127,12 @@ const Navbar = () => {
                   user?.profileImg ? 'w-7 h-7' : 'p-2'
                 }  hover:bg-red-400 transition duration-300 ease-in-out rounded-full`}
               >
-                {user?.profileImg ? (
+                {user ? (
                   <img
-                    src={user.profileImg}
-                    className="w-full h-full object-cover rounded-full"
+                    src={user?.profileImg ? `${user.profileImg}` : ProfileImg}
+                    className={`${
+                      user?.profileImg ? 'w-full h-full' : 'h-4 w-4'
+                    } object-cover rounded-full`}
                   />
                 ) : (
                   <img
@@ -139,10 +148,10 @@ const Navbar = () => {
                   style={{ right: '-5rem' }}
                 >
                   <div className=" child-div overflow-hidden  shadow-3xl bg-white py-5 px-8 rounded-md flex  justify-center items-start  gap-4 text-2xl  ">
-                    {user?.profileImg ? (
+                    {user ? (
                       <div className="flex flex-col justify-start items-start gap-4">
                         <span className="font-bold text-xs">
-                          Hi, {username}
+                          Hi, {user?.username}
                         </span>
                         <Link to="/dashboard" className="hover:font-bold">
                           Dashboard
@@ -180,12 +189,8 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="flex justify-center items-center cursor-pointer relative group parent-div ">
-                <img
-                  src={CartImg}
-                  className="w-10 md:w-7 object-cover"
-                  alt=""
-                />
-                <div className=" child-div group-hover:bg-red-600 absolute bottom-5 bg-black transition duration-300 ease-in-out text-white h-7 w-7 md:h-5 md:w-5 flex items-center justify-center left-5 md:left-4 md:bottom-4 text-sm md:text-xxs    rounded-full">
+                <img src={CartImg} className="w-8 md:w-7 object-cover" alt="" />
+                <div className=" child-div group-hover:bg-red-600 absolute bottom-4 bg-black transition duration-300 ease-in-out text-white h-5 w-5 md:h-5 md:w-5 flex items-center justify-center left-5 md:left-4 md:bottom-4 text-sm md:text-xxs    rounded-full">
                   4
                 </div>
               </div>

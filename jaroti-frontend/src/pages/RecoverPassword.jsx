@@ -50,9 +50,7 @@ const Login = () => {
       };
 
       const { success, resData } = await makeRequest(reqPramas);
-      console.log('here after');
       if (success) {
-        console.log('here in if');
         navigate('/login');
       }
     }

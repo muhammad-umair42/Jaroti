@@ -10,7 +10,7 @@ export const dataController = (reqType, data, dispatch) => {
       data = data?.message;
       break;
     case 'login':
-      dispatch(setUser({ user: data.data.user }));
+      dispatch(setUser({ user: data?.data?.user }));
       break;
     case 'logout':
       dispatch(reset());
@@ -18,6 +18,19 @@ export const dataController = (reqType, data, dispatch) => {
     case 'updateProfilePicture':
       dispatch(setUser({ user: data?.data?.user }));
       break;
+    case 'updateuser':
+      dispatch(setUser({ user: data?.data?.user }));
+      break;
+    case 'deleteuser':
+      dispatch(reset());
+      break;
+    case 'getusers':
+      resData = data?.data?.users;
+      break;
+    case 'getuser':
+      resData = data?.data?.user;
+      break;
+
     default:
       break;
   }

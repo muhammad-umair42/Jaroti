@@ -47,7 +47,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    res
+    return res
       .status(400)
       .json(new ApiResponse(400, null, 'Please provide all required fields'));
   }
@@ -55,19 +55,19 @@ export const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ username });
 
   if (!user) {
-    res.status(404).json(new ApiResponse(404, null, 'User not found'));
+    return res.status(404).json(new ApiResponse(404, null, 'User not found'));
   }
 
   const isPasswordCorrect = await user.isPasswordCorrect(password);
 
   if (!isPasswordCorrect) {
-    res.status(401).json(new ApiResponse(401, null, 'Invalid Password'));
+    return res.status(401).json(new ApiResponse(401, null, 'Invalid Password'));
   }
 
   const token = await generateToken(user);
 
   if (!token) {
-    res
+    return res
       .status(500)
       .json(new ApiResponse(500, null, 'Oops! Please try again later'));
   }
@@ -125,7 +125,8 @@ export const recoverPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, 'Password updated successfully'));
 });
 export const updateUser = asyncHandler(async (req, res) => {
-  const { user, user_id } = req.body;
+  const { user } = req.body;
+  const user_id = req.params?.userid;
 
   if (!user || !user_id) {
     return res
@@ -163,7 +164,7 @@ export const updateUser = asyncHandler(async (req, res) => {
   }
 
   const updatedUser = await existingUser.save();
-  const { password, ...userWithoutPassword } = updatedUser.toObject();
+  const userWithoutPassword = await User.findById(user_id).select('-password');
 
   res
     .status(200)
@@ -177,7 +178,7 @@ export const updateUser = asyncHandler(async (req, res) => {
 });
 
 export const deleteUser = asyncHandler(async (req, res) => {
-  const { user_id } = req.body;
+  const user_id = req.params.userid;
 
   if (!user_id) {
     return res
@@ -236,4 +237,35 @@ export const updateUserProfilePicture = asyncHandler(async (req, res) => {
         'Profile Picture Updated Successfully',
       ),
     );
+});
+
+export const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({}).select(
+    '-password -recoveryKey -__v -createdAt -updatedAt -isAdmin -profileImg',
+  );
+
+  if (!users) {
+    return res.status(404).json(new ApiResponse(404, {}, 'No Users Found'));
+  }
+
+  return res.status(200).json(new ApiResponse(200, { users }, 'Users Fetched'));
+});
+
+export const getUser = asyncHandler(async (req, res) => {
+  const user_id = req.params?.userid;
+
+  if (!user_id) {
+    return res
+      .status(401)
+      .json(new ApiResponse(401, null, 'User ID is required'));
+  }
+
+  const user = await User.findById(user_id).select('-password');
+
+  if (!user) {
+    return res.status(404).json(new ApiResponse(404, {}, 'User Not Found'));
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { user }, 'User Fetched Successfully'));
 });

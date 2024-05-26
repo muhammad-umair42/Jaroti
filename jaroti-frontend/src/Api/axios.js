@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { reset } from '../redux/Slices/userSlice';
+import { store } from '../redux/store';
 import { dataController } from './dataController';
 
 const instance = axios.create({
@@ -32,7 +34,11 @@ export const makeRequest = async ({
 
   try {
     let data = null;
-    if (reqType === 'updateProfilePicture') {
+
+    if (
+      reqType === 'updateProfilePicture' ||
+      reqType === 'updateApiUserProfile'
+    ) {
       const { data: fileData } = await fileInstance[method](
         `/api/v1${url}`,
         reqData,
@@ -52,7 +58,9 @@ export const makeRequest = async ({
   } catch (error) {
     //SHOWING ERROR
     toast.error(error?.response?.data?.message);
-    console.log(error);
+    if (error?.response?.status === 403) {
+      store.dispatch(reset());
+    }
     return { success, resData };
   }
 };

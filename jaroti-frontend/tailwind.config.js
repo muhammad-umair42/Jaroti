@@ -10,6 +10,9 @@ export default {
       lg: ['20px', '28px'],
       xl: ['24px', '32px'],
     },
+    fontFamily: {
+      poppins: ['Poppins', 'sans-serif'],
+    },
     extend: {
       boxShadow: {
         '3xl': 'rgba(0, 0, 0, 0.35) 0px 5px 15px;',

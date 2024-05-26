@@ -1,6 +1,9 @@
 import { Router } from 'express';
 
 import {
+  deleteUser,
+  getUser,
+  getUsers,
   loginUser,
   logoutUser,
   recoverPassword,
@@ -16,9 +19,10 @@ const router = Router();
 // User Routes
 router.route('/register').post(registerUser);
 router.route('/login').post(loginUser);
-router.route('/updateuser').post(isUserAuthenticated, updateUser);
+router.route('/updateuser/:userid').post(isUserAuthenticated, updateUser);
 router.route('/recoverpassword').post(recoverPassword);
-router.route('/logout').get(logoutUser);
+router.route('/logout/:userid').get(isUserAuthenticated, logoutUser);
+router.route('/deleteuser/:userid').delete(isUserAuthenticated, deleteUser);
 router
   .route('/user/updateprofileimage/:userid')
   .post(
@@ -26,5 +30,7 @@ router
     upload.single('profilePicture'),
     updateUserProfilePicture,
   );
+router.route('/').get(isUserAuthenticated, getUsers);
+router.route('/user/:userid').get(isUserAuthenticated, getUser);
 
 export default router;

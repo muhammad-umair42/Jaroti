@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import ProfileImg from '../../assets/profiledummy.jpg';
 import { makeRequest } from './../../Api/axios';
-const DashProfileSection = ({ user }) => {
+const DashProfileSection = ({ user, ApiUser = false }) => {
   const fileInputRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const DashProfileSection = ({ user }) => {
       url: `/users/user/updateprofileimage/${user._id}`,
       dispatch,
       reqData: selectedImage,
-      reqType: 'updateProfilePicture',
+      reqType: `${ApiUser ? 'updateApiUserProfile' : 'updateProfilePicture'}`,
     };
 
     const { success } = toast.promise(makeRequest(reqParams), {
@@ -48,12 +48,15 @@ const DashProfileSection = ({ user }) => {
       setSelectedImage(null);
       return null;
     }
+    if (ApiUser && success) {
+      window.location.reload();
+    }
 
     return;
   };
 
   return (
-    <div className="flex flex-col justify-center items-center py-5 px-5 gap-5 shadow-2xl rounded-lg">
+    <div className="w-full md:w-max flex flex-col justify-center items-center py-8 px-10 gap-5 shadow-2xl rounded-lg">
       <img
         src={user?.profileImg ? `${user?.profileImg}` : ProfileImg}
         className="w-[15vw] h-[15vw] rounded-full border-4 border-primary-500 object-cover"
