@@ -2,7 +2,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import userRouter from './routes/userRoutes.js';
-
 export const app = express();
 
 app.use(cors({ origin: true, credentials: true }));

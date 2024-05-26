@@ -41,47 +41,47 @@ const HomePage = () => {
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/10-404x404.jpg',
     },
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/14-404x404.jpg',
     },
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/15-404x404.jpg',
     },
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/20-404x404.jpg',
     },
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/18-404x404.jpg',
     },
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/21-404x404.jpg',
     },
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/21-404x404.jpg',
     },
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/14-404x404.jpg',
     },
     {
       name: 'Gold Plated Earring',
       price: 10,
-      img: HeroImg1,
+      img: 'https://jaroti-be87.kxcdn.com/jaroti/wp-content/uploads/2022/03/14-404x404.jpg',
     },
   ];
   const dummyCategories = [
